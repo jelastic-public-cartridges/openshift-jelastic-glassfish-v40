@@ -7,5 +7,10 @@ for dir in logs tmp pid lock cache env; do
 done
 
 [ -d "/opt/repo/logs" ] && rmdir /opt/repo/logs
-sed 's/opt\/repo:\/bin\/bash/opt\/repo\/tmp:\/bin\/bash/g' "/etc/passwd"
 ln -s /opt/repo/versions/4.1/glassfish/domains/domain1/logs /opt/repo/logs
+
+sed -i 's/opt\/repo:\/bin\/bash/opt\/repo\/home:\/bin\/bash/g' "/etc/passwd"
+
+if [ -d "/opt/repo/.ssh" ] ; then
+    mv /opt/repo/.ssh /opt/repo/home/
+fi
