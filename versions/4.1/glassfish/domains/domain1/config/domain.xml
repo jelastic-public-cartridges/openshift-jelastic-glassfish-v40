@@ -230,7 +230,6 @@
         <!-- Woodstox property needed to pass StAX TCK -->
         <jvm-options>-Dcom.ctc.wstx.returnNullForDefaultNamespace=true</jvm-options>
 	<jvm-options>-XX:+UseParNewGC</jvm-options>
-        <jvm-options>-XX:-UseAdaptiveSizePolicy</jvm-options>
         <jvm-options>-Djava.net.preferIPv4Stack=true</jvm-options>
       </java-config>
       <network-config>
@@ -410,7 +409,6 @@
              -->
              <jvm-options>-Dfelix.fileinstall.disableConfigSave=false</jvm-options>
 	     <jvm-options>-XX:+UseParNewGC</jvm-options>
-             <jvm-options>-XX:-UseAdaptiveSizePolicy</jvm-options>
              <jvm-options>-Djava.net.preferIPv4Stack=true</jvm-options>
              <!-- End of OSGi bundle configurations -->
         </java-config>
