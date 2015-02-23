@@ -14,3 +14,7 @@ sed -i 's/opt\/repo:\/bin\/bash/opt\/repo\/home:\/bin\/bash/g' "/etc/passwd"
 if [ -d "/opt/repo/.ssh" ] ; then
     mv /opt/repo/.ssh /opt/repo/home/
 fi
+
+if [ -d "/opt/repo/.bash_profile" ] ; then
+    mv /opt/repo/.bash_profile /opt/repo/home/
+fi
