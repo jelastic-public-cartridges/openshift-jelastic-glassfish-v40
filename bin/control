@@ -1,0 +1,63 @@
+#!/bin/sh
+. /etc/init.d/functions
+
+prog="glassfish"
+
+GLASSFISH_HOME=${GLASSFISH_HOME:-"/opt/repo/versions/4.1/"}
+
+start() {
+        echo  $"Starting $prog: "
+        if [ -e /opt/repo/lock/glassfish ]; then
+            if [ -e /opt/repo/pid/glassfish.pid ] && [ -e /proc/`cat /opt/repo/pid/glassfish.pid` ]; then
+                echo -n $"cannot start glassfish: glassfish is already running.";
+                failure $"cannot start glassfish: glassfish already running.";
+                echo
+                return 1
+            fi
+        fi;
+        memory_total=`free -m | grep Mem | awk '{print $2}'`;
+        [ -z "$XMX" ] && { let XMX=memory_total-35; }
+        sed -i "s/-Xmx[0-9]*m/-Xmx${XMX}m/g" "/opt/repo/versions/4.1/glassfish/domains/domain1/config/domain.xml";
+        $GLASSFISH_HOME/bin/asadmin start-domain domain1
+        RETVAL=$?
+        PID=$(pgrep -f glassfish.jar)
+        echo
+        [ $RETVAL -eq 0 ] && touch /opt/repo/lock/glassfish && echo $PID > /opt/repo/pid/glassfish.pid;
+        return $RETVAL
+}
+
+stop() {
+        echo  $"Stopping $prog: "
+        if [ ! -e /opt/repo/lock/glassfish ]; then
+            echo -n $"cannot stop glassfish: glassfish is not running."
+            failure $"cannot stop glassfish: glassfish is not running."
+            echo
+            return 1;
+        fi
+        $GLASSFISH_HOME/bin/asadmin stop-domain domain1
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ] && rm -f /opt/repo/lock/glassfish && rm /opt/repo/pid/glassfish.pid;
+        return $RETVAL
+}
+
+case "$1" in
+start)
+    start
+    ;;
+stop)
+    stop
+    ;;
+restart)
+    stop
+    start
+    ;;
+build)
+    echo 
+    ;;
+deploy)
+    echo
+    ;;
+*)
+    echo "usage: $0 (start|stop|restart)"
+esac
