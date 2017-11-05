@@ -17,8 +17,8 @@ fi
 [ -d "/opt/repo/logs" ] && rmdir /opt/repo/logs
 ln -s /opt/repo/versions/4.0/glassfish/domains/domain1/logs /opt/repo/logs
 
-echo -e "$(find /usr -name libjli.so -printf "%h\n")" > /etc/ld.so.conf.d/java.conf ; \
-ldconfig
+#echo -e "$(find /usr -name libjli.so -printf "%h\n")" > /etc/ld.so.conf.d/java.conf ; \
+#ldconfig
 
 JAVABIN=$(which java 2>/dev/null)
 [ ! -z "$JAVABIN" ] && {
